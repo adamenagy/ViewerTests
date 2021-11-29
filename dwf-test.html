@@ -1,0 +1,96 @@
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1, user-scalable=no" />
+    <meta charset="utf-8">
+
+    <!-- The Viewer CSS -->
+    <link rel="stylesheet" href="https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/style.min.css" type="text/css">
+
+    <!-- Developer CSS -->
+    <style>
+        body {
+            margin: 0;
+        }
+        
+        #MyConytainerDiv {
+            width: 100%;
+            height:90%;
+            position: relative;
+        }
+
+        #MyViewerDiv {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            background-color: #F0F8FF;
+        }
+
+        #MyButtons {
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          width: 400px;
+          height: 100px;
+        }
+    </style>
+    
+    <title>Showing A360 Shared files</title>
+</head>
+
+<body>
+
+    <!-- The Viewer will be instantiated here -->
+    <div id="MyConytainerDiv">
+        Header <br />
+        <div id="MyViewerDiv">
+          
+        </div>
+        Footer
+    </div>
+    
+    <!-- The Viewer JS -->
+    <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/viewer3D.js"></script>
+
+    <!-- jQuery -->
+    <!--
+      <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    -->
+
+    <!-- Developer JS -->
+    <script>
+        let options = {
+          env: "Local"
+        };
+        Autodesk.Viewing.Initializer(options, () => {
+          //let viewer = new Autodesk.Viewing.GuiViewer3D(
+          let viewer = new Autodesk.Viewing.Viewer3D(
+            document.getElementById('MyViewerDiv'), {}
+          );
+    
+          viewer.start();
+
+          viewer.loadModel("/Arbor_Press.dwfx", {}, async (model1) => {
+            //<button style="position: absolute;" onclick="onClick(this)">-</button>
+            let btns = document.createElement("div");
+            btns.id = "MyButtons";
+
+            let btn = document.createElement("button");
+            btn.onclick = evt => {
+              evt.target.textContent = "getScreenMode = " + NOP_VIEWER.getScreenMode().toString();
+            };
+            btn.textContent = "getScreenMode =";
+            btns.appendChild(btn);
+
+            btn = document.createElement("button");
+            btn.onclick = evt => {
+              NOP_VIEWER.nextScreenMode();
+            };
+            btn.textContent = "nextScreenMode()";
+            btns.appendChild(btn);
+
+            viewer.container.appendChild(btns);
+          });
+        });
+    </script>
+</body>
+</html>
